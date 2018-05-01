@@ -16,6 +16,10 @@ nltk.download('stopwords')
 class TextToStems(object):
 
     
+    def __init__(self, remove_stopwords):
+        self.remove_stopwords = remove_stopwords
+        
+    
     def __clean_text(self, text):
         # remove short in brackets such as (i), (ii), (iii), (a), (b), [1], [2], [3], {1}, {2}, {3}
         text = re.sub(r'\(.{1,3}\)|\[.{1,3}\]|\{.{1,3}\}', ' ', text)
@@ -31,8 +35,9 @@ class TextToStems(object):
         words = self.__clean_text(text)
         
         # remove stopwords
-        stop_words = set(stopwords.words('english'))
-        words = [t for t in words if not t in stop_words]
+        if self.remove_stopwords:
+            stop_words = set(stopwords.words('english'))
+            words = [t for t in words if not t in stop_words]
         
         # stemmer
         stemmer = nltk.stem.SnowballStemmer('english')

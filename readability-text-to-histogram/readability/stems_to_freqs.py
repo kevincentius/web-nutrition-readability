@@ -11,8 +11,9 @@ from readability.env import Environment
 
 class StemsToFreqs(object):
 
-    def __init__(self, debug = False):
+    def __init__(self, remove_stopwords, debug = False):
         self.debug = debug
+        self.remove_stopwords = remove_stopwords
         
         self.stem_frequencies = {}
         
@@ -27,7 +28,7 @@ class StemsToFreqs(object):
                 stem = stemmer.stem(word)
                 
                 # remove stopwords
-                if word in stop_words:
+                if self.remove_stopwords and word in stop_words:
                     pass
                 elif stem in self.stem_frequencies:
                     self.stem_frequencies[stem]['words'].append(word)
@@ -68,7 +69,7 @@ class StemsToFreqs(object):
         max_value = max(item[1]['frequency'] for item in self.stem_frequencies.items())
         
         # scale data using power 0.2 to better distribute the bin range in the histogram
-        power = 0.2
+        power = 0.15
         bins = np.arange(0, math.pow(max_value+1, power), math.pow(max_value, power)/num_bins)
         pow_freqs = np.power(freqs, power)
         

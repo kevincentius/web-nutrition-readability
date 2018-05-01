@@ -28,6 +28,7 @@ if __name__ == '__main__':
     # linear regression model
     regr = linear_model.Ridge(alpha=0.01)
     regr.fit(x_train, y_train, np.reshape(sw_train, [-1]))
+    #regr.fit(x_train, y_train)
     
     a_train = regr.predict(x_train)
     print(np.hstack((y_train, a_train)))
@@ -37,8 +38,14 @@ if __name__ == '__main__':
     
     # smart? guess
     y_avg_test = np.repeat(np.average(y_test), len(y_test))
+    #y_avg_test = np.repeat(np.sum(np.multiply(y_test, sw_test)) / np.sum(sw_test), len(y_test))
+    print(np.average(y_test), np.sum(np.multiply(y_test, sw_test)) / np.sum(sw_test))
+    print(np.sum(sw_test))
     
-    print('STUPID MSE', mean_squared_error(y_test, y_avg_test, sw_test))
-    print('TRAIN MSE', mean_squared_error(y_train, a_train, sw_train))
-    print('TEST MSE', mean_squared_error(y_test, a_test, sw_test))
+    #print('STUPID MSE', mean_squared_error(y_test, y_avg_test, sw_test))
+    #print('TRAIN MSE', mean_squared_error(y_train, a_train, sw_train))
+    #print('TEST MSE', mean_squared_error(y_test, a_test, sw_test))
+    print('STUPID MSE', mean_squared_error(y_test, y_avg_test))
+    print('TRAIN MSE', mean_squared_error(y_train, a_train))
+    print('TEST MSE', mean_squared_error(y_test, a_test))
     print('coef: ', regr.coef_)
